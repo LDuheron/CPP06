@@ -16,16 +16,13 @@
 
 Serialization::Serialization()
 {
-	this->_data->_i = 0;
-	this->_data->_d = 0;
 	if (DEBUG)
 		std::cout << "Default constructor called.\n";
 }
 
 Serialization::Serialization(Serialization const & src)
 {
-	this->_data->_i = src._data->_i;
-	this->_data->_d = src._data->_d;
+	(void)src;
 	if (DEBUG)
 		std::cout << "Copy constructor called.\n";
 }
@@ -38,30 +35,12 @@ Serialization::~Serialization()
 		std::cout << "Destructor called.\n";
 }
 
-// Accessors -------------------------------------------------------------------
-
-int	& Serialization::getI(void) const
-{
-	return (this->_data->_i);
-}
-
-double	& Serialization::getD(void) const
-{
-	return (this->_data->_d);
-}
-
 // Overload --------------------------------------------------------------------
 
 Serialization &	Serialization::operator=(Serialization const & rhs)
 {
-	this->_data = rhs._data;
+	(void)rhs;
 	return *this;
-}
-
-std::ostream & operator<<(std::ostream & lhs, Serialization const & rhs)
-{
-	lhs << "i : " << rhs.getI() << "\nd : " << rhs.getD()<< ".\n";
-	return lhs;
 }
 
 // Functions -------------------------------------------------------------------

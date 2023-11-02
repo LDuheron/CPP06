@@ -32,15 +32,11 @@ struct Data
 class Serialization
 {
 	private:
-		Data *_data;
 
 	public:
 		Serialization();
 		Serialization(Serialization const & src);
 		~Serialization();
-
-		int		&getI(void) const;
-		double	&getD(void) const;
 
 		uintptr_t	serialize(Data* ptr);
 		Data*		deserialize(uintptr_t raw);
@@ -49,6 +45,5 @@ class Serialization
 
 };
 
-std::ostream & operator<<(std::ostream & lhs, Serialization const & rhs);
 
 #endif
