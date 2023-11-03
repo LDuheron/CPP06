@@ -6,7 +6,7 @@
 /*   By: lduheron <lduheron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:12:15 by lduheron          #+#    #+#             */
-/*   Updated: 2023/11/03 12:14:05 by lduheron         ###   ########.fr       */
+/*   Updated: 2023/11/03 12:41:45 by lduheron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,29 @@ Base * generate(void)
 	return (new C);
 }
 
+void	identify(Base* p)
+{
+	identify(*p);
+}
 
-// void	identify(Base* p);
-// void 	identify(Base& p);
+void 	identify(Base& p)
+{
+	try
+	{
+		(void)dynamic_cast<A&>(p);
+		std::cout << "Class type : A\n";
+	}
+	catch (const std::exception& e) {}
+	try
+	{
+		(void)dynamic_cast<B&>(p);
+		std::cout << "Class type : B\n";
+	}
+	catch (const std::exception& e) {}
+	try
+	{
+		(void)dynamic_cast<C&>(p);
+		std::cout << "Class type : C\n";
+	}
+	catch (const std::exception& e) {}
+}
