@@ -23,13 +23,10 @@ class Base;
 #define SUCCESS 0
 #define ERROR 1
 
-class C : Base
+class C : public Base
 {
 	private:
 	public:
-		C();
-		virtual ~C();
-
 };
 
 #endif

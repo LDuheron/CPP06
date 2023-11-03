@@ -37,14 +37,3 @@ Base::~Base()
 // Overload --------------------------------------------------------------------
 
 // Functions -------------------------------------------------------------------
-
-Base * Base::generate(void)
-{
-	int r = rand();
-
-	if (r % 3 == 0)
-		return (new A);
-	else if (r % 2 == 0)
-		return (new B);
-	return (new C);
-}
