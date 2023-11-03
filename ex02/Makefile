@@ -22,10 +22,8 @@ PRV_DIR		= 	private
 #            SOURCE FILES            #
 ######################################
 SRC			=						\
-				class/A.cpp			\
 				class/Base.cpp		\
-				class/B.cpp			\
-				class/C.cpp			\
+				class/Methods.cpp		\
 				main.cpp
 
 ######################################

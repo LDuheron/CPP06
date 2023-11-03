@@ -13,15 +13,9 @@
 #ifndef A_HPP
 # define A_HPP
 
-# include <iostream>
-# include <string>
-# include <limits.h>
 # include "Base.hpp"
 
 class Base;
-
-#define SUCCESS 0
-#define ERROR 1
 
 class A : public Base
 {

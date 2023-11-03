@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Base.cpp                                     :+:      :+:    :+:   */
+/*   Methods.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lduheron <lduheron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 12:12:32 by lduheron          #+#    #+#             */
-/*   Updated: 2023/10/27 15:37:30 by lduheron         ###   ########.fr       */
+/*   Created: 2023/11/03 12:08:29 by lduheron          #+#    #+#             */
+/*   Updated: 2023/11/03 12:14:01 by lduheron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Base.hpp"
+#ifndef METHODS_HPP
+# define METHODS_HPP
 
-Base::~Base()
-{
-	if (DEBUG)
-		std::cout << "Base destructor called.\n";
-}
+#include "Base.hpp"
+#include "A.hpp"
+#include "B.hpp"
+#include "C.hpp"
+
+class Base;
+
+Base *	generate(void);
+void	identify(Base* p);
+void 	identify(Base& p);
+
+#endif
