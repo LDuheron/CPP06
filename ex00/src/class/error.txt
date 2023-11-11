@@ -1,0 +1,3 @@
+inf => passe en float -> segfault.
+inf+ => passe en int -> segfault.
+int -> faux

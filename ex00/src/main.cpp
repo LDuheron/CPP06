@@ -6,11 +6,11 @@
 /*   By: lduheron <lduheron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 15:40:32 by lduheron          #+#    #+#             */
-/*   Updated: 2023/10/30 16:37:28 by lduheron         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:08:00 by lduheron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#include "Converter.hpp"
 
 int	main(int argc, char **argv)
 {
@@ -19,6 +19,7 @@ int	main(int argc, char **argv)
 		std::cerr << "Error: Usage is ./ScalarConverter <scalar_number>\n";
 		return (ERROR);
 	}
+	std::cout << "int max : " << INT_MAX << "\nDOUBLE MAX : " << DBL_MAX << "\nINT_MAX : " << FLT_MAX << "\n";
 
 	ScalarConverter	sConverter;
 	sConverter.converter(argv[1]);
