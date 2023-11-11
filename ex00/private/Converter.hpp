@@ -6,7 +6,7 @@
 /*   By: lduheron <lduheron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 15:40:37 by lduheron          #+#    #+#             */
-/*   Updated: 2023/11/09 19:25:58 by lduheron         ###   ########.fr       */
+/*   Updated: 2023/11/11 11:15:31 by lduheron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ class ScalarConverter
 		char	_c;
 		double	_d;
 		float	_f;
+		int		_nbSign;
+		int		_hasSign; // -1 = -, 0 = no sign, 1 = +
 		int		_type;
-
 	public:
 		ScalarConverter();
 		ScalarConverter(ScalarConverter const & src);
@@ -51,6 +52,7 @@ class ScalarConverter
 
 		void		converter(std::string string);
 
+		char		printSign(void);
 		void		printChar(void);
 		void		printDouble(void);
 		void		printFloat(void);
@@ -66,6 +68,7 @@ class ScalarConverter
 		int			isDisplayable(std::string string);
 		void		isImpossible(std::string const string);
 
+		void		checkSign(std::string string);
 		void		findType(std::string string);
 
 		class ParseFailException : public std::exception 

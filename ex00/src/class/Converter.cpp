@@ -6,7 +6,7 @@
 /*   By: lduheron <lduheron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 15:40:39 by lduheron          #+#    #+#             */
-/*   Updated: 2023/11/11 10:42:00 by lduheron         ###   ########.fr       */
+/*   Updated: 2023/11/11 11:21:05 by lduheron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 // Constructor -----------------------------------------------------------------
 
-ScalarConverter::ScalarConverter() : _i(0.0), _c(0), _d(0.0), _f(0.0f), _type(DEFAULT)
+ScalarConverter::ScalarConverter() : _i(0.0), _c(0), _d(0.0), _f(0.0f), _nbSign(0), _hasSign(0), _type(DEFAULT)
 {
 	// std::cout << "Scalar converter form target constructor called.\n";
 }
 
-ScalarConverter::ScalarConverter(ScalarConverter const & src) : _i(src._i), _c(src._c), _d(src._d), _f(src._f), _type(src._type)
+ScalarConverter::ScalarConverter(ScalarConverter const & src) : _i(src._i), _c(src._c), _d(src._d), _f(src._f), _nbSign(src._nbSign), _hasSign(src._hasSign), _type(src._type)
 {
 	// std::cout << "Scalar converter copy constructor called.\n";
 }
@@ -52,7 +52,14 @@ const char* ScalarConverter::ParseFailException::what() const throw()
 
 // Functions -------------------------------------------------------------------
 
-//////////////////////////////////////////////////////////////////////////////////////// PRINT 
+char	ScalarConverter::printSign(void)
+{
+	if (this->_hasSign == -1)
+		return ('-');
+	else if (this->_hasSign == 1)
+		return ('+');
+	return ('\0');
+}
 
 void	ScalarConverter::printChar(void)
 {
@@ -69,9 +76,9 @@ void	ScalarConverter::printDouble(void)
 	else
 	{
 		if (this->_d - this->_i != 0)
-			std::cout << "double: " << this->_d << "\n";
+			std::cout << "double: " << printSign() << this->_d << "\n";
 		else
-			std::cout << "double: " << this->_d << ".0\n";
+			std::cout << "double: " << printSign() << this->_d << ".0\n";
 	}
 }
 
@@ -82,9 +89,9 @@ void	ScalarConverter::printFloat(void)
 	else
 	{
 		if (this->_f - this->_i != 0)
-			std::cout << "float: " << this->_f << "f\n";
+			std::cout << "float: " << printSign() << this->_f << "f\n";
 		else
-			std::cout << "float: " << this->_f << ".0f\n";
+			std::cout << "float: " << printSign() << this->_f << ".0f\n";
 	}
 }
 
@@ -93,7 +100,7 @@ void	ScalarConverter::printInt(void)
 	if (this->_i < INT_MIN || this->_i > INT_MAX)
 		std::cout << "int: impossible\n";
 	else
-		std::cout << "int: " << this->_i << ".0\n";
+		std::cout << "int: " << printSign() << this->_i << ".0\n";
 }
 
 void	ScalarConverter::printAll(void)
@@ -103,8 +110,6 @@ void	ScalarConverter::printAll(void)
 	printFloat();
 	printDouble();
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////// FROM 
 
 void	ScalarConverter::fromChar(std::string const string)
 {	
@@ -181,8 +186,6 @@ void	ScalarConverter::fromInt(std::string const string)
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////// IS SOMETHING
-
 int		ScalarConverter::isChar(std::string string)
 {
 	for (int i = 48; i < 58; i++)
@@ -216,14 +219,26 @@ void	ScalarConverter::isImpossible(std::string const string)
 		std::cout << "char: impossible\nint: impossible\nfloat: impossible\ndouble: impossible\n";
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ELSE 
-
+void	ScalarConverter::checkSign(std::string string)
+{
+	if (string[0] == '-')
+		this->_hasSign = -1;
+	if (string[0] == '+')
+		this->_hasSign = 1;
+	for (int i = 0; i < (int)string.length(); i++)
+	{
+		if (!string[i] || !(string[i] == '-' || string[i] == '+'))
+			break;
+		this->_nbSign++;
+	}
+}
 
 void	ScalarConverter::findType(std::string string)
 {
 	int	length = string.length();
 
-	if (isdigit(string[0]) == FALSE)
+	checkSign(string);
+	if (isdigit(string[0]) == FALSE && _hasSign == 0)
 	{
 		std::cout << "IS CHAR !\n";
 		if (length == 1 && isChar(string) == TRUE)

@@ -1,3 +1,7 @@
 inf => passe en float -> segfault.
 inf+ => passe en int -> segfault.
 int -> faux
+
+// missing - + management + char are considered impossible
+// remove IS CHAR !
+// add exponential isscience ???
