@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lduheron <lduheron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/26 15:40:39 by lduheron          #+#    #+#             */
-/*   Updated: 2023/11/14 11:43:01 by lduheron         ###   ########.fr       */
+/*   Created: 2023/10/26 15:40:39 by ldu heron          #+#    #+#             */
+/*   Updated: 2023/11/14 13:02:31 by lduheron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 // Constructor -----------------------------------------------------------------
 
-ScalarConverter::ScalarConverter() : _i(0.0), _c(0), _d(0.0), _f(0.0f), _type(DEFAULT)
+ScalarConverter::ScalarConverter() : _i(0.0), _c(0), _d(0.0), _f(0.0f), _type(DEFAULT), _isOverflow(FALSE)
 {
 	// std::cout << "Scalar converter form target constructor called.\n";
 }
 
-ScalarConverter::ScalarConverter(ScalarConverter const & src) : _i(src._i), _c(src._c), _d(src._d), _f(src._f), _type(src._type)
+ScalarConverter::ScalarConverter(ScalarConverter const & src) : _i(src._i), _c(src._c), _d(src._d), _f(src._f), _type(src._type), _isOverflow(src._isOverflow)
 {
 	// std::cout << "Scalar converter copy constructor called.\n";
 }
@@ -40,6 +40,7 @@ ScalarConverter	&ScalarConverter::operator=(ScalarConverter const &src)
 	this->_d = src._d;
 	this->_f = src._f;
 	this->_type = src._type;
+	this->_isOverflow = src._isOverflow;
 	return (*this);
 }
 
@@ -71,23 +72,15 @@ void	ScalarConverter::printDouble(void)
 void	ScalarConverter::printFloat(void)
 {
 	if (this->_f - this->_i != 0)
-		std::cout << std::fixed << "float: " << this->_f << "f\n";
+		std::cout << std::fixed << std::setprecision(2) << "float: " << this->_f << "f\n";
 	else
 		std::cout << std::fixed << "float: " << this->_f << "f\n";
 }
 
-int	ScalarConverter::checkIntOverflow(void)
-{
-	double tmp = static_cast<double>(this->_i);
-	if (tmp < INT_MIN || tmp > INT_MAX)
-		return (OVERFLOW);
-	return (SUCCESS);
-}
-
 void	ScalarConverter::printInt(void)
 {
-	if (checkIntOverflow() == OVERFLOW)
-		std::cout << "int: impossible\n";
+	if (this->_isOverflow == TRUE)
+		std::cout << "int: overflow\n";
 	else
 		std::cout << std::fixed << "int: " << this->_i << ".0\n";
 }
@@ -124,7 +117,7 @@ void	ScalarConverter::fromDouble(std::string const string)
 	std::strcpy(value, string.c_str());
 	if (iss >> value)
 	{
-		this->_d = strtod(value, NULL);
+		this->_d = atof(value);
 		this->_c = static_cast<char>(this->_d);
 		this->_i = static_cast<int>(this->_d);
 		this->_f = static_cast<float>(this->_d);
@@ -168,10 +161,14 @@ void	ScalarConverter::fromInt(std::string const string)
 	std::strcpy(value, string.c_str());
 	if (iss >> value)
 	{
-		this->_i = atoll(value);
-		this->_c = static_cast<char>(this->_i);
-		this->_d = static_cast<double>(this->_i);
-		this->_f = static_cast<float>(this->_i);
+		double tmp = static_cast<double>(atof(value));
+		if (tmp < INT_MIN || tmp > INT_MAX)
+			this->_isOverflow = TRUE;
+		else
+			this->_i = atoi(value);
+		this->_c = static_cast<char>(tmp);
+		this->_d = static_cast<double>(tmp);
+		this->_f = static_cast<float>(tmp);
 		printAll();
 		delete[] value;
 	}
@@ -204,14 +201,35 @@ int	ScalarConverter::checkSign(std::string string)
 	return (TRUE);
 }
 
+int ScalarConverter::isWrongScalar(std::string string)
+{
+	int cptDot = 0;
+	int	length = string.length();
+
+	for (int i = 0; i < (int)string.size(); i++)
+	{
+		if (string[i] == '.')
+		{
+			cptDot++;
+			if (cptDot > 1)
+				return (TRUE);
+		}
+		else if (!(isdigit(string[i]) != 0 || string[i] == '-' || string[i] == '+'))
+		{
+			if (!(i == (length - 1) && isFloat(string, length) == TRUE))
+				return (TRUE);
+		}	
+	}
+	return (FALSE);
+}
+
 int	ScalarConverter::isDisplayable(std::string string)
 {
 	int status = FALSE;
 
 	if (checkSign(string) == FALSE)
-		return (FALSE);
-
-	if (string == "+inf" || string == "+inff")
+		std::cerr << "Error: not a scalar.\n";
+	else if (string == "+inf" || string == "+inff")
 		std::cout << "char: impossible\nint: impossible\nfloat: impossible\ndouble: impossible\n";
 	else if (string == "-inf" || string == "-inff")
 		std::cout << "char: impossible\nint: impossible\nfloat: impossible\ndouble: impossible\n";
@@ -238,7 +256,7 @@ int	ScalarConverter::isDouble(std::string string)
 
 int	ScalarConverter::isFloat(std::string string, int length)
 {
-	if (string[length - 1] == 'f')
+	if (length > 2 && string[length - 1] == 'f')
 		return (TRUE);
 	return (FALSE);
 }
@@ -247,10 +265,20 @@ void	ScalarConverter::findType(std::string string)
 {
 	int	length = string.length();
 
+	if (length == 0)
+	{
+		std::cout << "IS IMPOSSIBLE !\n";
+		this->_type = IMPOSSIBLE;
+	}
 	if (length == 1)
 	{
 		std::cout << "IS CHAR !\n";
 		this->_type = CHAR;
+	}
+	else if (isWrongScalar(string) == TRUE)
+	{
+		std::cerr << "Error: not a scalar.\n";
+		return  ;
 	}
 	else if (isFloat(string, length) == TRUE)
 	{
@@ -273,10 +301,10 @@ void	ScalarConverter::converter(std::string string)
 {
 	if (isDisplayable(string) == FALSE)
 		return  ;
+
 	findType(string);
 	void	(ScalarConverter::*ptr[])(std::string) = {&ScalarConverter::fromChar, &ScalarConverter::fromDouble, &ScalarConverter::fromInt, &ScalarConverter::fromFloat, &ScalarConverter::isImpossible};
 	int		inputType[] = {CHAR, DOUBLE, INT, FLOAT, IMPOSSIBLE};
-
 	try
 	{
 		for (int i = 0; i < 5; i++)

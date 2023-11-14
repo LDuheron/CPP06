@@ -6,7 +6,7 @@
 /*   By: lduheron <lduheron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 15:40:37 by lduheron          #+#    #+#             */
-/*   Updated: 2023/11/14 11:37:35 by lduheron         ###   ########.fr       */
+/*   Updated: 2023/11/14 13:43:08 by lduheron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@
 # include <stdlib.h> 
 # include <string>
 # include <cstring>
+#include <iostream>
+#include <fstream>
+#include <limits>
+#include <iomanip>
 
 #define INT 0
 #define CHAR 1
@@ -44,6 +48,7 @@ class ScalarConverter
 		double		_d;
 		float		_f;
 		int			_type;
+		bool		_isOverflow;
 	public:
 		ScalarConverter();
 		ScalarConverter(ScalarConverter const & src);
@@ -70,6 +75,9 @@ class ScalarConverter
 
 		int			isDisplayable(std::string string);
 		void		isImpossible(std::string string);
+
+		int 		isWrongScalar(std::string string);
+
 
 		void		findType(std::string string);
 
