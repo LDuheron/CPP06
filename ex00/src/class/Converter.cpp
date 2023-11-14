@@ -119,7 +119,10 @@ void	ScalarConverter::fromDouble(std::string const string)
 	{
 		this->_d = atof(value);
 		this->_c = static_cast<char>(this->_d);
-		this->_i = static_cast<int>(this->_d);
+		if (this->_d < INT_MIN || this->_d > INT_MAX)
+			this->_isOverflow = TRUE;
+		else
+			this->_i = static_cast<int>(this->_d);
 		this->_f = static_cast<float>(this->_d);
 		printAll();
 		delete[] value;
@@ -142,7 +145,10 @@ void	ScalarConverter::fromFloat(std::string const string)
 		this->_f = atof(value);
 		this->_c = static_cast<char>(this->_f);
 		this->_d = static_cast<double>(this->_f);
-		this->_i = static_cast<int>(this->_f);
+		if (this->_d < INT_MIN || this->_d > INT_MAX)
+			this->_isOverflow = TRUE;
+		else
+			this->_i = static_cast<int>(this->_f);
 		printAll();
 		delete[] value;
 	}
@@ -266,35 +272,20 @@ void	ScalarConverter::findType(std::string string)
 	int	length = string.length();
 
 	if (length == 0)
-	{
-		std::cout << "IS IMPOSSIBLE !\n";
 		this->_type = IMPOSSIBLE;
-	}
-	if (length == 1)
-	{
-		std::cout << "IS CHAR !\n";
+	else if (length == 1)
 		this->_type = CHAR;
-	}
 	else if (isWrongScalar(string) == TRUE)
 	{
 		std::cerr << "Error: not a scalar.\n";
 		return  ;
 	}
 	else if (isFloat(string, length) == TRUE)
-	{
-		std::cout << "IS FLOAT !\n";
 		this->_type = FLOAT;
-	}
 	else if (isDouble(string) == TRUE)
-	{
-		std::cout << "IS DOUBLE !\n";
 		this->_type = DOUBLE;
-	}
 	else
-	{
-		std::cout << "IS INT !\n";
 		this->_type = INT;
-	}
 }
 
 void	ScalarConverter::converter(std::string string)
