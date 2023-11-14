@@ -64,9 +64,9 @@ void	ScalarConverter::printChar(void)
 void	ScalarConverter::printDouble(void)
 {
 	if (this->_d - this->_i != 0)
-		std::cout << std::scientific << "double: " << this->_d << "\n";
+		std::cout << std::scientific << std::setprecision(5) << "double: " << this->_d << "\n";
 	else
-		std::cout << std::scientific << "double: " << this->_d << "\n";
+		std::cout << std::scientific << std::setprecision(5) << "double: " << this->_d << "\n";
 }
 
 void	ScalarConverter::printFloat(void)
@@ -74,7 +74,7 @@ void	ScalarConverter::printFloat(void)
 	if (this->_f - this->_i != 0)
 		std::cout << std::fixed << std::setprecision(2) << "float: " << this->_f << "f\n";
 	else
-		std::cout << std::fixed << "float: " << this->_f << "f\n";
+		std::cout << std::fixed << std::setprecision(2) << "float: " << this->_f << "f\n";
 }
 
 void	ScalarConverter::printInt(void)

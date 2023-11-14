@@ -23,6 +23,8 @@
 #define SUCCESS 0
 #define ERROR 1
 
+// uintptr_t : unsigned integer type that is capable of storing a pointer.
+
 struct Data
 {
 	int		_i;
@@ -44,6 +46,5 @@ class Serialization
 		Serialization &	operator=(Serialization const & rhs);
 
 };
-
 
 #endif

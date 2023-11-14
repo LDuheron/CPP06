@@ -6,7 +6,7 @@
 /*   By: lduheron <lduheron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:12:15 by lduheron          #+#    #+#             */
-/*   Updated: 2023/11/03 12:41:45 by lduheron         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:58:42 by lduheron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,16 @@ Base * generate(void)
 	int r = rand();
 
 	if (r % 3 == 0)
+	{
+		std::cout << "Class type : A\n";
 		return (new A);
+	}
 	else if (r % 2 == 0)
+	{	
+		std::cout << "Class type : B\n";
 		return (new B);
+	}
+	std::cout << "Class type : C\n";
 	return (new C);
 }
 
